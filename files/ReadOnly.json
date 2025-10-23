@@ -1,0 +1,158 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CoreDescribeList",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:Describe*",
+        "elasticloadbalancing:Describe*",
+        "autoscaling:Describe*",
+        "rds:Describe*",
+        "eks:Describe*",
+        "ecs:Describe*",
+        "cloudformation:Describe*",
+        "cloudformation:List*",
+        "cloudwatch:Get*",
+        "cloudwatch:List*",
+        "logs:Describe*",
+        "iam:Get*",
+        "iam:List*",
+        "apigateway:GET",
+        "cloudtrail:LookupEvents",
+        "cloudtrail:Describe*",
+        "cloudtrail:Get*",
+        "organizations:Describe*",
+        "organizations:List*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3Read",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket",
+        "s3:GetBucketLocation",
+        "s3:GetBucketPolicy",
+        "s3:GetBucketTagging",
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:GetLogEvents",
+        "logs:FilterLogEvents",
+        "logs:GetQueryResults",
+        "logs:StartQuery",
+        "logs:StopQuery",
+        "logs:GetLogRecord",
+        "logs:GetLogGroupFields"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DynamoRead",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:Describe*",
+        "dynamodb:List*",
+        "dynamodb:GetItem",
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaRead",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:GetFunction",
+        "lambda:GetFunctionConfiguration",
+        "lambda:List*",
+        "lambda:GetAlias",
+        "lambda:GetPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ParamsAndSecretsRead",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:DescribeParameters",
+        "ssm:GetParameter",
+        "ssm:GetParameters",
+        "ssm:GetParametersByPath",
+        "secretsmanager:ListSecrets",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRRead",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:Describe*",
+        "ecr:Get*",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CostExplorerRead",
+      "Effect": "Allow",
+      "Action": ["ce:Get*", "ce:List*"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KmsDecryptForReads",
+      "Effect": "Allow",
+      "Action": ["kms:Decrypt"],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "kms:ViaService": [
+            "secretsmanager.*.amazonaws.com",
+            "ssm.*.amazonaws.com",
+            "s3.*.amazonaws.com",
+            "logs.*.amazonaws.com",
+            "ecr.*.amazonaws.com"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "IAMReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "iam:Get*",
+        "iam:List*",
+        "iam:GenerateServiceLastAccessedDetails",
+        "iam:GetServiceLastAccessedDetails"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IdentityCenterReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "sso:List*",
+        "sso:Get*",
+        "sso:Describe*",
+        "sso-directory:List*",
+        "sso-directory:Get*",
+        "sso-directory:Describe*",
+        "identitystore:List*",
+        "identitystore:Get*",
+        "identitystore:Describe*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

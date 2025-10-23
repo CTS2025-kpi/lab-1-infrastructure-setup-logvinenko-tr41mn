@@ -1,0 +1,160 @@
+---
+Metadata:
+  AWSToolsMetrics:
+    IaC_Generator: "arn:aws:cloudformation:us-east-1:812756961106:generatedTemplate/f7a07cb3-7ac6-41d1-a01d-e6df951bdf3c"
+Resources:
+  IAMRoleReadOnly:
+    UpdateReplacePolicy: "Retain"
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Retain"
+    Properties:
+      Path: "/"
+      ManagedPolicyArns:
+      - Ref: "IAMManagedPolicyPolicyReadOnly"
+      MaxSessionDuration: 3600
+      RoleName: "ReadOnly"
+      Description: ""
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Action: "sts:AssumeRole"
+          Effect: "Allow"
+          Principal:
+            AWS: "arn:aws:iam::812756961106:user/IAMuser1"
+  IAMManagedPolicyPolicyReadOnly:
+    UpdateReplacePolicy: "Retain"
+    Type: "AWS::IAM::ManagedPolicy"
+    DeletionPolicy: "Retain"
+    Properties:
+      ManagedPolicyName: "ReadOnly"
+      Path: "/"
+      Description: ""
+      Groups: []
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Resource: "*"
+          Action:
+          - "ec2:Describe*"
+          - "elasticloadbalancing:Describe*"
+          - "autoscaling:Describe*"
+          - "rds:Describe*"
+          - "eks:Describe*"
+          - "ecs:Describe*"
+          - "cloudformation:Describe*"
+          - "cloudformation:List*"
+          - "cloudwatch:Get*"
+          - "cloudwatch:List*"
+          - "logs:Describe*"
+          - "iam:Get*"
+          - "iam:List*"
+          - "apigateway:GET"
+          - "cloudtrail:LookupEvents"
+          - "cloudtrail:Describe*"
+          - "cloudtrail:Get*"
+          - "organizations:Describe*"
+          - "organizations:List*"
+          Effect: "Allow"
+          Sid: "CoreDescribeList"
+        - Resource: "*"
+          Action:
+          - "s3:ListAllMyBuckets"
+          - "s3:ListBucket"
+          - "s3:GetBucketLocation"
+          - "s3:GetBucketPolicy"
+          - "s3:GetBucketTagging"
+          - "s3:GetObject"
+          - "s3:GetObjectVersion"
+          Effect: "Allow"
+          Sid: "S3Read"
+        - Resource: "*"
+          Action:
+          - "logs:GetLogEvents"
+          - "logs:FilterLogEvents"
+          - "logs:GetQueryResults"
+          - "logs:StartQuery"
+          - "logs:StopQuery"
+          - "logs:GetLogRecord"
+          - "logs:GetLogGroupFields"
+          Effect: "Allow"
+          Sid: "LogsRead"
+        - Resource: "*"
+          Action:
+          - "dynamodb:Describe*"
+          - "dynamodb:List*"
+          - "dynamodb:GetItem"
+          - "dynamodb:BatchGetItem"
+          - "dynamodb:Query"
+          - "dynamodb:Scan"
+          Effect: "Allow"
+          Sid: "DynamoRead"
+        - Resource: "*"
+          Action:
+          - "lambda:GetFunction"
+          - "lambda:GetFunctionConfiguration"
+          - "lambda:List*"
+          - "lambda:GetAlias"
+          - "lambda:GetPolicy"
+          Effect: "Allow"
+          Sid: "LambdaRead"
+        - Resource: "*"
+          Action:
+          - "ssm:DescribeParameters"
+          - "ssm:GetParameter"
+          - "ssm:GetParameters"
+          - "ssm:GetParametersByPath"
+          - "secretsmanager:ListSecrets"
+          - "secretsmanager:GetSecretValue"
+          Effect: "Allow"
+          Sid: "ParamsAndSecretsRead"
+        - Resource: "*"
+          Action:
+          - "ecr:Describe*"
+          - "ecr:Get*"
+          - "ecr:BatchGetImage"
+          - "ecr:GetDownloadUrlForLayer"
+          Effect: "Allow"
+          Sid: "ECRRead"
+        - Resource: "*"
+          Action:
+          - "ce:Get*"
+          - "ce:List*"
+          Effect: "Allow"
+          Sid: "CostExplorerRead"
+        - Condition:
+            StringLike:
+              kms:ViaService:
+              - "secretsmanager.*.amazonaws.com"
+              - "ssm.*.amazonaws.com"
+              - "s3.*.amazonaws.com"
+              - "logs.*.amazonaws.com"
+              - "ecr.*.amazonaws.com"
+          Resource: "*"
+          Action:
+          - "kms:Decrypt"
+          Effect: "Allow"
+          Sid: "KmsDecryptForReads"
+        - Resource: "*"
+          Action:
+          - "iam:Get*"
+          - "iam:List*"
+          - "iam:GenerateServiceLastAccessedDetails"
+          - "iam:GetServiceLastAccessedDetails"
+          Effect: "Allow"
+          Sid: "IAMReadOnly"
+        - Resource: "*"
+          Action:
+          - "sso:List*"
+          - "sso:Get*"
+          - "sso:Describe*"
+          - "sso-directory:List*"
+          - "sso-directory:Get*"
+          - "sso-directory:Describe*"
+          - "identitystore:List*"
+          - "identitystore:Get*"
+          - "identitystore:Describe*"
+          Effect: "Allow"
+          Sid: "IdentityCenterReadOnly"
+      Roles:
+      - "ReadOnly"
+      Users: []
